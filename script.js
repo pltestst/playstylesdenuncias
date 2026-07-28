@@ -286,7 +286,7 @@
     if (error) { toast('Não foi possível carregar as denúncias.', 'error'); return; }
     staffReports = data || [];
     await renderStaffCards();
-    if (currentProfile.role === 'founder') await loadAdmins();
+
   }
 
   async function renderStaffCards() {
@@ -330,74 +330,36 @@
     toast(status === 'Aceita' ? 'Denúncia aceita.' : 'Denúncia recusada.');
     await renderStaff();
   }
-async function callAdminFunction(body) {
+
+  async function callAdminFunction(body) {
     const { data: { session } } = await db.auth.getSession();
-
-    if (!session) {
-        throw new Error("Sessão expirada.");
-    }
-
+    if (!session) throw new Error('Sessão expirada.');
     const response = await fetch(`${CONFIG.url}/functions/v1/manage-admins`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify(body)
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}`, apikey: CONFIG.publishableKey }, body: JSON.stringify(body)
     });
-
     const data = await response.json().catch(() => ({}));
-
- if (!response.ok) {
-    console.log(data);
-    throw new Error(data.error || 'Falha ao gerenciar administradores.');
-}a;
-}
-
-  async function loadAdmins() {
-    const box = $('#adminsList'); if (!box) return;
-    box.innerHTML = '<div class="empty">Carregando administradores...</div>';
-    try {
-      const result = await callAdminFunction({ action: 'list' });
-      const admins = result.admins || [];
-     console.log(admins);
-box.innerHTML = "Admins encontrados: " + admins.length;
-    } catch (e) { box.innerHTML = `<div class="empty">${esc(e.message)}</div>`; }
+    if (!response.ok) throw new Error(data.error || 'Falha ao gerenciar administradores.');
+    return data;
   }
+
+  async function loadAdmins() { return; }
 
   $('#refreshAdmins') && ($('#refreshAdmins').onclick = loadAdmins);
   $('#createAdminForm')?.addEventListener('submit', async event => {
-   console.log("BOTÃO CRIAR ADM FUNCIONOU");
-    event.preventDefault(); 
-const form = event.currentTarget;
-
-const displayName = form.querySelector('[name="displayName"]').value.trim();
-const username = form.querySelector('[name="username"]').value.trim();
-const password = form.querySelector('[name="password"]').value.trim();
-const button = form.querySelector('button[type="submit"]');
-button.disabled = true;
-console.log(displayName, username, password);
-    if (!displayName || !/^[a-z0-9._-]+$/i.test(username) || password.length < 8) return toast('Preencha nome, usuário válido e senha com pelo menos 8 caracteres.', 'error');
-   try {
-    console.log("ADM CRIADO COM SUCESSO");
-  await callAdminFunction({
-    action: 'create',
-    display_name: displayName,
-    username,
-    password
+    event.preventDefault(); const form = event.currentTarget, fd = new FormData(form);
+    const displayName = form.querySelector('[name="displayName"]')?.value.trim() || '';
+    const username = (form.querySelector('[name="username"]')?.value || '').trim().toLowerCase();
+    const password = form.querySelector('[name="password"]')?.value || '';
+    if (!displayName || !username || !password) {
+      return toast('Informe nome, usuário e senha para criar o administrador.', 'error');
+    }
+    if (!/^[a-z0-9._-]+$/i.test(username)) return toast('Usuário inválido.', 'error');
+    if (password.length < 8) return toast('A senha precisa ter pelo menos 8 caracteres.', 'error');
+    const button = form.querySelector('button[type=submit]'); button.disabled = true;
+    try { await callAdminFunction({ action:'create', displayName, username, password }); form.reset(); toast('Administrador criado com sucesso. A conta foi salva no banco de dados.'); }
+    catch (e) { toast(e.message, 'error'); } finally { button.disabled = false; }
   });
-console.log("CRIANDO ADM NO SUPABASE");
-  form.reset();
-  toast('Administrador criado com sucesso.');
-  await loadAdmins();
 
-} catch (e) {
-  toast(e.message, 'error');
-
-} finally {
-  button.disabled = false;
-}
-});
   $('#adminsList')?.addEventListener('click', async event => {
     const b = event.target.closest('[data-admin-action]'); if (!b) return;
     const action = b.dataset.adminAction, userId = b.dataset.userId, username = b.dataset.username;
@@ -417,12 +379,6 @@ console.log("CRIANDO ADM NO SUPABASE");
     } catch (e) { toast(e.message, 'error'); }
   });
 
-db.auth.onAuthStateChange((_event, session) => {
-    if (!session) currentProfile = null;
-});
-
-getSessionProfile().then(profile => {
-    if (profile) nav('staff-dashboard');
-});
-
+  db.auth.onAuthStateChange((_event, session) => { if (!session) currentProfile = null; });
+  getSessionProfile().then(profile => { if (profile) nav('staff-dashboard'); });
 })();

@@ -164,8 +164,8 @@
 
       <section id="founderPanel" class="founder-panel" hidden>
         <div class="founder-head">
-          <div><span class="eyebrow">ACESSO DO FUNDADOR</span><h2>Gerenciar administradores</h2><p>Crie, bloqueie, redefina a senha ou exclua contas da staff.</p></div>
-          <button type="button" class="secondary" id="refreshAdmins">Atualizar lista</button>
+          <div><span class="eyebrow">ACESSO DO FUNDADOR</span><h2>Gerenciar administradores</h2><p>Crie novos administradores da staff. O gerenciamento completo continua disponível pelo banco de dados.</p></div>
+          
         </div>
         <form id="createAdminForm" class="panel admin-create-form" novalidate>
           <label><span>Nome de exibição *</span><input name="displayName" required maxlength="50" placeholder="Ex: BPV Tete"></label>
@@ -173,7 +173,7 @@
           <label><span>Senha inicial *</span><input name="password" type="password" required minlength="8" placeholder="Mínimo de 8 caracteres"></label>
           <button class="primary" type="submit">Criar administrador</button>
         </form>
-        <div id="adminsList" class="admins-list"></div>
+        <div id="adminCreateMessage" class="empty" hidden></div>
       </section>
     </section>
   </main>
