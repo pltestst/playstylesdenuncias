@@ -1,0 +1,8 @@
+BRASIL STYLE V27
+
+Base da atualização:
+- Área da staff protegida por sessão Supabase.
+- Cargo fundador/admin validado pelo banco.
+- Próxima etapa: painel de gerenciamento de administradores.
+
+Projeto baseado na V26.

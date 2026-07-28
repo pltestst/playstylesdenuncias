@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#63ff23">
+  <title>Brasil Style — Denúncias V21</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=21">
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header class="topbar">
+    <button class="brand" data-page="home" aria-label="Início">
+      <img src="assets/logo-topo.png" alt="Brasil Style">
+      <span><strong>BRASIL STYLE</strong><small>Central de Denúncias</small></span>
+    </button>
+    <nav>
+      <button data-page="home">Início</button>
+      <button data-page="report">Fazer denúncia</button>
+      <button data-page="my-reports">Minhas denúncias</button>
+      <button data-page="against-me">Denúncias contra meu ID</button>
+      <button class="staff-button" data-page="staff-login">Área da Staff</button>
+    </nav>
+    <button class="mobile-menu" id="mobileMenu">☰</button>
+  </header>
+
+  <main>
+    <section class="page active" id="home">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">SERVIDOR BRASIL STYLE</span>
+          <h1>Denuncie com rapidez, segurança e organização.</h1>
+          <p>Envie sua denúncia com provas, acompanhe a decisão da equipe e ajude a manter o servidor organizado.</p>
+          <div class="hero-actions">
+            <button class="primary" data-page="report">Fazer uma denúncia</button>
+            <button class="secondary" data-page="my-reports">Minhas denúncias</button>
+            <button class="secondary hero-against" data-page="against-me">Denúncias contra meu ID</button>
+          </div>
+
+        </div>
+        <div class="hero-logo"><img src="assets/logo-principal-v13.png?v=16" alt="BS Denúncias"></div>
+      </div>
+      <div class="feature-grid">
+        <article><span>01</span><h3>Envie os dados</h3><p>Informe seu nome, ID, jogador denunciado, motivo e provas.</p></article>
+        <article><span>02</span><h3>A equipe analisa</h3><p>A staff recebe a denúncia como nova e ela se torna urgente após 10 horas.</p></article>
+        <article><span>03</span><h3>Veja a decisão</h3><p>Em Minhas Denúncias você acompanha apenas se a denúncia está em análise, foi aceita ou recusada.</p></article>
+        <article><span>04</span><h3>Denúncias contra você</h3><p>Consulte pelo seu nick correto ou pelo seu ID para descobrir se existe alguma denúncia contra sua conta, sem revelar o denunciante nem as provas.</p></article>
+      </div>
+    </section>
+
+    <section class="page" id="report">
+      <div class="page-heading"><span class="eyebrow">NOVA DENÚNCIA</span><h2>Relate o ocorrido</h2><p>Preencha as informações com atenção. Campos marcados são obrigatórios.</p></div>
+      <form id="reportForm" class="panel form-grid" novalidate>
+        <label><span>Seu nick no jogo *</span><input name="playerName" required maxlength="40" placeholder="Ex: Paulo_Silva"></label>
+        <label><span>Seu ID no servidor *</span><input name="playerId" class="numeric-only" inputmode="numeric" pattern="[0-9]+" required maxlength="10" placeholder="Ex: 152"></label>
+        <label><span>Nick do denunciado *</span><input name="accusedName" required maxlength="40" placeholder="Ex: Carlos_Santos"></label>
+        <label><span>ID do denunciado *</span><input name="accusedId" class="numeric-only" inputmode="numeric" pattern="[0-9]+" required maxlength="10" placeholder="Ex: 248"></label>
+        <label><span>Data do ocorrido *</span><input name="eventDate" type="date" required></label>
+        <label><span>Categoria *</span><select name="category" required><option value="">Selecione</option><option>DM / RDM</option><option>Anti-RP</option><option>Abuso de bug</option><option>Ofensa / Assédio</option><option>Cheat / Hack</option><option>Outro</option></select></label>
+        <label class="full"><span>Descreva o ocorrido *</span><textarea name="reason" required placeholder="Conte o que aconteceu..."></textarea></label>
+        <label class="full upload-box" for="evidenceFiles">
+          <input id="evidenceFiles" name="evidenceFiles" type="file" multiple accept="image/*,video/*">
+          <span class="upload-icon" aria-hidden="true">＋</span>
+          <strong>Anexar prints ou vídeos</strong>
+          <small>Anexe prints ou vídeos, ou informe um link de vídeo no campo abaixo.</small>
+          <div id="selectedFiles" class="selected-files evidence-preview-picker"></div>
+        </label>
+        <label class="full"><span>Link do vídeo <em>(opcional se houver anexos)</em></span><input name="videoLink" type="url" maxlength="1000" placeholder="Ex: https://youtu.be/... ou https://streamable.com/..."></label>
+        <label class="check full"><input name="truth" type="checkbox" required><span>Confirmo que as informações são verdadeiras e que denúncias falsas podem gerar punição.</span></label>
+        <div class="full form-actions"><button class="primary" type="submit">Enviar denúncia</button></div>
+      </form>
+    </section>
+
+    <section class="page" id="my-reports">
+      <div class="page-heading"><span class="eyebrow">ÁREA DO JOGADOR</span><h2>Consultar denúncias</h2><p>Pesquise pelo seu nick correto no servidor ou pelo seu ID. Os dois campos funcionam juntos e nenhum possui prioridade.</p></div>
+      <div class="panel identity-box dual-search-box">
+        <label><span>Seu nick no servidor</span><input id="myPlayerName" maxlength="40" placeholder="Ex: Paulo_Silva"></label>
+        <div class="search-divider">OU</div>
+        <label><span>Seu ID no servidor</span><input id="myPlayerId" class="numeric-only" inputmode="numeric" pattern="[0-9]+" maxlength="10" placeholder="Ex: 152"></label>
+        <button class="primary" id="loadMyReports">Consultar denúncias</button>
+      </div>
+      <div id="myReportsList" class="cards-list"></div>
+    </section>
+
+    <section class="page" id="against-me">
+      <div class="page-heading against-heading">
+        <span class="eyebrow">CONSULTA SEGURA</span>
+        <h2>Denúncias contra meu ID</h2>
+        <p>Pesquise pelo seu nick correto no servidor ou pelo seu ID. O sistema procura pelos dois sem dar preferência a nenhum deles. A identidade de quem denunciou, as provas e os dados da staff permanecem protegidos.</p>
+      </div>
+      <div class="panel identity-box against-search dual-search-box">
+        <label><span>Seu nick no servidor</span><input id="againstPlayerName" maxlength="40" placeholder="Ex: Paulo_Silva"></label>
+        <div class="search-divider">OU</div>
+        <label><span>Seu ID no servidor</span><input id="againstPlayerId" class="numeric-only" inputmode="numeric" pattern="[0-9]+" maxlength="10" placeholder="Ex: 152"></label>
+        <button class="primary" id="loadAgainstReports">Consultar denúncias</button>
+      </div>
+      <div id="againstReportsList" class="cards-list against-list"></div>
+    </section>
+
+    <section class="page" id="staff-login">
+      <div class="auth-wrap">
+        <div class="auth-shell">
+          <div class="auth-glow auth-glow-one"></div>
+          <div class="auth-glow auth-glow-two"></div>
+          <div class="panel auth-card premium-auth-card">
+            <div class="auth-logo-wrap">
+              <span class="auth-logo-ring"></span>
+              <img src="assets/bs-login-staff-v11.png?v=1101" alt="BS Login Staff">
+            </div>
+            <div class="restricted-badge">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3"/><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M12 14v3"/></svg>
+              ACESSO RESTRITO
+            </div>
+            <h2>Painel Administrativo</h2>
+            <p class="auth-subtitle">Entre com suas credenciais para gerenciar as denúncias do servidor.</p>
+            <form id="staffLoginForm">
+              <label>
+                <span>Usuário da staff</span>
+                <div class="auth-input-wrap">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+                  <input name="staffName" required autocomplete="username" placeholder="Digite seu usuário">
+                </div>
+              </label>
+              <label>
+                <span>Senha</span>
+                <div class="auth-input-wrap">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                  <input name="password" type="password" required autocomplete="current-password" placeholder="Digite sua senha">
+                </div>
+              </label>
+              <button class="primary auth-submit" type="submit">
+                <span>Entrar no painel</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>
+              </button>
+            </form>
+            <div class="auth-security-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+              Acesso exclusivo para membros autorizados da staff
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="staff-dashboard">
+      <div class="dashboard-head">
+        <div><span class="eyebrow">PAINEL ADMINISTRATIVO</span><h2>Gerenciar denúncias</h2><p id="staffWelcome"></p></div>
+        <button class="secondary" id="staffLogout">Sair</button>
+      </div>
+      <div class="dashboard-stats">
+        <div><span>Novas</span><strong id="countNew">0</strong></div>
+        <div class="urgent"><span>Urgentes</span><strong id="countUrgent">0</strong></div>
+        <div><span>Aceitas</span><strong id="countAccepted">0</strong></div>
+        <div><span>Recusadas</span><strong id="countRejected">0</strong></div>
+      </div>
+      <div class="filter-bar">
+        <button class="active" data-filter="all">Todas</button><button data-filter="Nova">Novas</button><button data-filter="Urgente">Urgentes</button><button data-filter="Aceita">Aceitas</button><button data-filter="Recusada">Recusadas</button>
+      </div>
+      <div id="staffReportsList" class="cards-list"></div>
+
+      <section id="founderPanel" class="founder-panel" hidden>
+        <div class="founder-head">
+          <div><span class="eyebrow">ACESSO DO FUNDADOR</span><h2>Gerenciar administradores</h2><p>Crie, bloqueie, redefina a senha ou exclua contas da staff.</p></div>
+          <button type="button" class="secondary" id="refreshAdmins">Atualizar lista</button>
+        </div>
+        <form id="createAdminForm" class="panel admin-create-form" novalidate>
+          <label><span>Nome de exibição *</span><input name="displayName" required maxlength="50" placeholder="Ex: BPV Tete"></label>
+          <label><span>Usuário *</span><input name="username" required maxlength="30" pattern="[A-Za-z0-9._-]+" placeholder="Ex: bpvtete"></label>
+          <label><span>Senha inicial *</span><input name="password" type="password" required minlength="8" placeholder="Mínimo de 8 caracteres"></label>
+          <button class="primary" type="submit">Criar administrador</button>
+        </form>
+        <div id="adminsList" class="admins-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-glow"></div>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="footer-kicker">BRASIL STYLE</span>
+        <h2>Central de Denúncias</h2>
+        <p>Sistema desenvolvido para facilitar o envio, a análise e o acompanhamento de denúncias do servidor.</p>
+      </div>
+
+      <div class="footer-column">
+        <h3>Acesso rápido</h3>
+        <button data-page="report">Fazer denúncia</button>
+        <button data-page="my-reports">Minhas denúncias</button>
+        <button data-page="against-me">Denúncias contra meu ID</button>
+        <button data-page="staff-login">Área da Staff</button>
+      </div>
+
+      <div class="footer-column footer-resources">
+        <h3>Recursos</h3>
+        <span>Consulta por Nick ou ID</span>
+        <span>Envio de múltiplas provas</span>
+        <span>Sistema seguro e organizado</span>
+        <a href="https://discord.gg/Dgz9vQf9x" target="_blank" rel="noopener">Discord oficial</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Brasil Style. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <a class="discord-float" href="https://discord.gg/Dgz9vQf9x" target="_blank" rel="noopener" aria-label="Entrar no Discord" title="Entrar no Discord">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19.5 5.34A16.3 16.3 0 0 0 15.44 4l-.5 1.02a15.1 15.1 0 0 0-5.86 0L8.56 4A16.5 16.5 0 0 0 4.5 5.35C1.93 9.12 1.24 12.8 1.59 16.43a16.4 16.4 0 0 0 4.98 2.52l1.2-1.64a10.5 10.5 0 0 1-1.88-.91l.46-.36c3.63 1.68 7.56 1.68 11.15 0l.47.36c-.6.36-1.23.66-1.88.91l1.2 1.64a16.3 16.3 0 0 0 4.98-2.52c.42-4.2-.72-7.85-2.77-11.09ZM8.82 14.2c-1.09 0-1.98-1-1.98-2.23s.87-2.23 1.98-2.23 2 1.01 1.98 2.23c0 1.23-.88 2.23-1.98 2.23Zm6.36 0c-1.09 0-1.98-1-1.98-2.23s.87-2.23 1.98-2.23 2 1.01 1.98 2.23c0 1.23-.87 2.23-1.98 2.23Z"/></svg>
+    <span>Discord</span>
+  </a>
+
+  <div class="modal-backdrop" id="rejectModal" role="dialog" aria-modal="true" aria-labelledby="rejectTitle">
+    <div class="modal-card">
+      <div class="modal-icon reject-modal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></div>
+      <h3 id="rejectTitle">Recusar denúncia</h3>
+      <p>Informe o motivo da recusa. Essa justificativa ficará visível para o jogador.</p>
+      <label><span>Justificativa *</span><textarea id="rejectReason" placeholder="Explique por que a denúncia foi recusada..."></textarea></label>
+      <div class="modal-actions"><button type="button" class="secondary" id="rejectCancel">Cancelar</button><button type="button" class="reject-confirm" id="rejectConfirm">Confirmar recusa</button></div>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="script.js?v=26"></script>
+</body>
+</html>
