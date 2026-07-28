@@ -673,3 +673,47 @@ main,.topbar,.toast,.modal{position:relative;z-index:2}
   border-radius:10px!important;
   font-size:13px!important;
 }
+
+
+/* V32 MOBILE PERFORMANCE FIX */
+@media (max-width: 600px){
+  .hero-logo img{
+    animation:none!important;
+    will-change:auto!important;
+    filter:drop-shadow(0 0 18px rgba(72,255,27,.18))!important;
+  }
+
+  .hero-logo::before,
+  .hero-logo::after{
+    animation:none!important;
+    display:none!important;
+  }
+
+  .hero-logo img{
+    width:240px!important;
+  }
+
+  .topbar nav.open{
+    z-index:9999!important;
+    position:fixed!important;
+    top:70px;
+    left:12px;
+    right:12px;
+    background:#050805f5!important;
+    border:1px solid rgba(80,255,35,.25);
+    box-shadow:0 20px 50px #000;
+  }
+
+  .brand img{
+    z-index:1!important;
+  }
+}
+
+/* keep report images compact */
+.evidence img,
+.proof-image,
+.report-card img{
+  max-height:220px!important;
+  object-fit:cover!important;
+}
+
